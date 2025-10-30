@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏠 Dream Home Price Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-light: #4cc9f0;
+      --secondary: #3a0ca3;
+      --text: #2b2d42;
+      --light: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm58-60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-32 24c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm57 45c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM30 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" fill="rgba(255,255,255,0.1)" fill-rule="evenodd"/></svg>');
+      opacity: 0.1;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 300;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: -2rem auto 3rem;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-container {
+      padding: 2.5rem;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .form-header p {
+      color: #666;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #e1e5ee;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      background-color: var(--light);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    input::placeholder {
+      color: #9ca3af;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      width: auto;
+      display: inline-block;
+      margin: 1rem 0;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    .images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+      padding: 0 2.5rem 2.5rem;
+    }
+
+    .image-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      position: relative;
+      height: 180px;
+    }
+
+    .image-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .image-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .image-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      color: white;
+      padding: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .image-card:hover .image-label {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 0;
+        border-radius: 0;
+      }
+      
+      .form-container {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      form {
+        grid-template-columns: 1fr;
+      }
+      
+      .images {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏡 House Price Prediction Form</h1>
+    <p>Enter the details below to estimate the value of a house</p>
+  </header>
+
+  <div class="container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2>🏠 Property Details</h2>
+        <p>Fill in the property details to get an accurate price prediction</p>
+      </div>
+      
+      <form id="houseForm" action="/submit" method="post">
+        <div class="form-group">
+          <label for="CRIM">Crime Rate (CRIM)</label>
+          <input type="number" step="0.001" id="CRIM" name="CRIM" placeholder="Crime rate per capita by town" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="ZN">Residential Land (ZN)</label>
+          <input type="number" id="ZN" name="ZN" placeholder="Proportion of residential land" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="INDUS">Non-Retail Land (INDUS)</label>
+          <input type="number" id="INDUS" name="INDUS" placeholder="Proportion of non-retail business acres" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="CHAS">Charles River (CHAS)</label>
+          <input type="number" id="CHAS" name="CHAS" placeholder="1 if tract bounds river; 0 otherwise" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="NOX">Nitric Oxide (NOX)</label>
+          <input type="number" step="0.001" id="NOX" name="NOX" placeholder="Nitric oxide concentration" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="RM">Rooms (RM)</label>
+          <input type="number" step="0.1" id="RM" name="RM" placeholder="Average number of rooms" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="AGE">Age (AGE)</label>
+          <input type="number" id="AGE" name="AGE" placeholder="Proportion of units built before 1940" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="DIS">Distance (DIS)</label>
+          <input type="number" step="0.01" id="DIS" name="DIS" placeholder="Distance to employment centers" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="RAD">Highway Access (RAD)</label>
+          <input type="number" id="RAD" name="RAD" placeholder="Accessibility to highways" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="TAX">Property Tax (TAX)</label>
+          <input type="number" id="TAX" name="TAX" placeholder="Property tax rate per $10,000" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="PTRATIO">Pupil-Teacher Ratio</label>
+          <input type="number" step="0.1" id="PTRATIO" name="PTRATIO" placeholder="Pupil-teacher ratio" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="B">Black Residents (B)</label>
+          <input type="number" step="0.1" id="B" name="B" placeholder="Proportion of Black residents" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="LSTAT">Lower Status % (LSTAT)</label>
+          <input type="number" step="0.1" id="LSTAT" name="LSTAT" placeholder="Percentage of lower status" required>
+        </div>
+        
+        <div class="full-width">
+          <button type="submit">
+            <span>Get Price Prediction</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="images">
+      <div class="image-card">
+        <img src="https://cdn.pixabay.com/photo/2016/11/29/02/12/architecture-1867187_960_720.jpg" alt="Modern House">
+        <div class="image-label">Modern Home Design</div>
+      </div>
+      <div class="image-card">
+        <img src="https://cdn.pixabay.com/photo/2017/08/06/00/43/house-2584506_960_720.jpg" alt="Suburban Home">
+        <div class="image-label">Suburban Living</div>
+      </div>
+      <div class="image-card">
+        <img src="https://cdn.pixabay.com/photo/2016/03/27/22/22/home-1283036_960_720.jpg" alt="Classic House">
+        <div class="image-label">Classic Architecture</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form will now submit to the backend as intended -->
+</body>
+</html>
